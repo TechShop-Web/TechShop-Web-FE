@@ -2,11 +2,12 @@ import React from "react";
 import { Layout, Button, Modal } from "antd";
 import { ShoppingCartOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useAuth } from "../contexts/AuthContext";
-
+import { Link, useNavigate } from "react-router-dom";
 const { Header } = Layout;
 
 const AppHeader = () => {
   const { auth, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
   const handleLogout = () => {
     Modal.confirm({
       title: "Confirm Logout",
@@ -15,6 +16,9 @@ const AppHeader = () => {
       cancelText: "Cancel",
       onOk: () => logout(),
     });
+  };
+  const handleCart = () => {
+    navigate("/cart");
   };
   return (
     <Header className="bg-white shadow-md px-8 py-4 flex items-center justify-between">
@@ -25,18 +29,15 @@ const AppHeader = () => {
         <a href="/" className="text-gray-700 hover:text-blue-500 transition">
           Home
         </a>
-        <a
-          href="/products"
-          className="text-gray-700 hover:text-blue-500 transition"
-        >
-          Products
-        </a>
         {isAuthenticated ? (
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-600 font-medium">
-              {auth.email}
-            </span>
+            <Link to="/account">
+              <span className="text-sm text-gray-600 font-medium cursor-pointer hover:underline">
+                {auth.email}
+              </span>
+            </Link>
             <Button
+              onClick={handleCart}
               size="middle"
               type="default"
               icon={<ShoppingCartOutlined />}

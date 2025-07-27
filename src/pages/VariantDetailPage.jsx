@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, Spin, Button, Divider, message } from "antd";
+import { Card, Spin, Button, Divider, InputNumber, message } from "antd";
 import productApi from "../api/productApi";
+import cartApi from "../api/cartApi";
 import { useAuth } from "../contexts/AuthContext";
 
 const fallbackVariant = {
@@ -20,6 +21,7 @@ const VariantDetailPage = () => {
   const navigate = useNavigate();
   const [variant, setVariant] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchVariant = async () => {
@@ -45,15 +47,39 @@ const VariantDetailPage = () => {
     callback();
   };
 
-  const handleAddToCart = () => {
-    handleAuthCheck(() => {
-      message.success("Product added to cart");
+  const handleAddToCart = async () => {
+    handleAuthCheck(async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          message.error("Please log in again.");
+          return;
+        }
+
+        const payload = {
+          productId: variant.productId,
+          variantId: variant.id,
+          quantity,
+          unitPrice: variant.price,
+        };
+
+        const res = await cartApi.addToCart(payload, token);
+        message.success(`Product added to cart (Cart ID: ${res.cartId})`);
+      } catch (error) {
+        console.error("Add to cart failed:", error);
+        message.error("Failed to add product to cart.");
+      }
     });
   };
 
   const handleBuyNow = () => {
     handleAuthCheck(() => {
-      message.info("Redirecting to checkout...");
+      navigate("/confirm-order", {
+        state: {
+          variant,
+          quantity,
+        },
+      });
     });
   };
 
@@ -85,6 +111,15 @@ const VariantDetailPage = () => {
             <span className="text-blue-600 font-medium text-lg">
               ${variant.price}
             </span>
+          </p>
+          <p>
+            <strong className="text-gray-700">Quantity:</strong>{" "}
+            <InputNumber
+              min={1}
+              max={variant.stock}
+              value={quantity}
+              onChange={setQuantity}
+            />
           </p>
         </div>
 
