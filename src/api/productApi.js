@@ -12,6 +12,10 @@ const productApi = {
     const response = await axiosInstance.get("/Product/list");
     return response.data;
   },
+  getProductDetailById: async (id) => {
+    const response = await axiosInstance.get(`/Product/detail/${id}`);
+    return response.data;
+  },
   getVariantsByProductId: async (id) => {
     const response = await axiosInstance.get(
       `/ProductVariant/groupwithproduct/${id}`
