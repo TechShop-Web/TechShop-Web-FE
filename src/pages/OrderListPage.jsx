@@ -50,9 +50,7 @@ const OrderListPage = () => {
       dataIndex: "totalAmount",
       key: "totalAmount",
       sorter: (a, b) => a.totalAmount - b.totalAmount,
-      render: (amount) => (
-        <span>{(amount * 25000).toLocaleString("vi-VN")}₫</span>
-      ),
+      render: (amount) => <span>{amount.toLocaleString("vi-VN")}₫</span>,
     },
     {
       title: "Shipping",
@@ -92,7 +90,7 @@ const OrderListPage = () => {
   ];
 
   return (
-    <div className="min-w-max mx-auto">
+    <div className="min-w-32 mx-auto">
       <Card className="shadow border-gray-200 rounded-none">
         <Title level={3} className="mb-4">
           Your Orders

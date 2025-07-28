@@ -71,23 +71,23 @@ const CartPage = () => {
           renderItem={(item) => (
             <List.Item>
               <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-                <div>
-                  <Text strong>{item.productName}</Text>
-                  <div className="text-sm text-gray-600">
+                <div className="flex-1">
+                  <Text strong className="block">
+                    {item.productName}
+                  </Text>
+                  <Text className="block text-sm text-gray-600">
                     {item.configLabel}
-                  </div>
+                  </Text>
                 </div>
                 <div className="text-right">
-                  <Text>Quantity: {item.quantity}</Text>
-                  <br />
-                  <Text>
+                  <Text className="block">Quantity: {item.quantity}</Text>
+                  <Text className="block">
                     Unit Price:{" "}
                     <span className="text-blue-600 font-semibold">
                       ${item.unitPrice}
                     </span>
                   </Text>
-                  <br />
-                  <Text>
+                  <Text className="block">
                     Total:{" "}
                     <span className="text-green-600 font-semibold">
                       ${item.unitPrice * item.quantity}

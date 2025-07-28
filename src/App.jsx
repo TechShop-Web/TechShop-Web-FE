@@ -14,6 +14,12 @@ import OrderListPage from "./pages/OrderListPage";
 import ProfilePage from "./pages/ProfilePage";
 import CartPage from "./pages/CartPage";
 import PaymentReturnPage from "./pages/PaymentReturnPage";
+import AdminLayout from "./layouts/AdminLayout";
+import DashboardPage from "./pages/admin/DashboardPage";
+import ProductManagementPage from "./pages/admin/ProductManagementPage";
+import UserManagementPage from "./pages/admin/UserManagementPage";
+import CategoryManagementPage from "./pages/admin/CategoryManagementPage";
+import AdminRoute from "./components/AdminRoute";
 function App() {
   return (
     <>
@@ -44,6 +50,19 @@ function App() {
             <Route path="cart" element={<CartPage />} />
             <Route path="vnpay-return" element={<PaymentReturnPage />} />
             <Route path="*" element={<NotFoundPage />} />
+          </Route>
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminLayout />
+              </AdminRoute>
+            }
+          >
+            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="products" element={<ProductManagementPage />} />
+            <Route path="users" element={<UserManagementPage />} />
+            <Route path="categories" element={<CategoryManagementPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

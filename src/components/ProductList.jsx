@@ -66,7 +66,7 @@ const ProductList = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 cursor-pointer">
         {products.map(({ id, name, brand, description }) => (
           <div
             key={id}
