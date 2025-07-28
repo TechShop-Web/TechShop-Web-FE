@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 const { Header } = Layout;
 
 const AppHeader = () => {
-  const { auth, isAuthenticated, logout } = useAuth();
+  const { auth, isAuthenticated, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   const handleLogout = () => {
     Modal.confirm({
@@ -31,6 +31,14 @@ const AppHeader = () => {
         </a>
         {isAuthenticated ? (
           <div className="flex items-center space-x-4">
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="text-sm text-blue-600 font-semibold hover:underline"
+              >
+                Admin Panel
+              </Link>
+            )}
             <Link to="/account">
               <span className="text-sm text-gray-600 font-medium cursor-pointer hover:underline">
                 {auth.email}

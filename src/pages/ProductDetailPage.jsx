@@ -29,15 +29,24 @@ const ProductDetailPage = () => {
   const [productDetail, setProductDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchVariants = async () => {
       try {
         const data = await productApi.getVariantsByProductId(id);
-        if (!data || !Array.isArray(data.variants)) {
-          console.warn("Fallback to fake data");
+
+        if (!Array.isArray(data) || data.length === 0) {
+          console.warn(
+            "Fallback to fake data due to empty or invalid response"
+          );
           setProductDetail(fallbackProductDetail);
         } else {
-          setProductDetail(data);
+          const product = data[0]; // ✅ lấy phần tử đầu tiên
+          setProductDetail({
+            productName: product.productName,
+            productId: product.productId,
+            variants: product.variants || [],
+          });
         }
       } catch (err) {
         console.error("Error loading product variants:", err);
@@ -55,6 +64,12 @@ const ProductDetailPage = () => {
       <div className="flex justify-center items-center h-64">
         <Spin size="large" />
       </div>
+    );
+  }
+
+  if (!productDetail) {
+    return (
+      <div className="text-center text-gray-500 mt-8">Product not found.</div>
     );
   }
 
