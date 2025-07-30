@@ -1,80 +1,101 @@
 import React from "react";
 import { Layout, Button, Modal } from "antd";
-import { ShoppingCartOutlined, LogoutOutlined } from "@ant-design/icons";
+import {
+  ShoppingCartOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+
 const { Header } = Layout;
 
 const AppHeader = () => {
   const { auth, isAuthenticated, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
+
   const handleLogout = () => {
     Modal.confirm({
       title: "Confirm Logout",
       content: "Are you sure you want to log out?",
-      okText: "Yes, Logout",
+      okText: "Yes",
       cancelText: "Cancel",
+      centered: true,
       onOk: () => logout(),
     });
   };
+
   const handleCart = () => {
     navigate("/cart");
   };
+
   return (
-    <Header className="bg-white shadow-md px-8 py-4 flex items-center justify-between">
-      <div className="text-3xl font-bold text-blue-600 tracking-tight">
+    <Header className="bg-[#0f172a] px-8 py-4 flex justify-between items-center shadow-md z-50">
+      {/* LOGO */}
+      <Link
+        to="/"
+        className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text"
+      >
         TechVN
-      </div>
-      <nav className="flex items-center space-x-6">
-        <a href="/" className="text-gray-700 hover:text-blue-500 transition">
+      </Link>
+
+      {/* NAV LINKS */}
+      <nav className="flex items-center gap-6 text-sm">
+        <Link to="/" className="text-gray-300 hover:text-blue-400 transition">
           Home
-        </a>
+        </Link>
+
         {isAuthenticated ? (
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-4">
             {isAdmin && (
               <Link
                 to="/admin"
-                className="text-sm text-blue-600 font-semibold hover:underline"
+                className="text-blue-400 font-semibold hover:underline"
               >
                 Admin Panel
               </Link>
             )}
-            <Link to="/account">
-              <span className="text-sm text-gray-600 font-medium cursor-pointer hover:underline">
-                {auth.email}
-              </span>
-            </Link>
-            <Button
-              onClick={handleCart}
-              size="middle"
-              type="default"
-              icon={<ShoppingCartOutlined />}
+
+            <Link
+              to="/account"
+              className="text-gray-400 hover:text-blue-300 font-medium"
             >
-              Cart
-            </Button>
+              {auth.email}
+            </Link>
+
+            {!isAdmin && (
+              <Button
+                onClick={handleCart}
+                icon={<ShoppingCartOutlined />}
+                type="default"
+                className="text-gray-300 border-gray-600 hover:border-blue-400 hover:text-blue-400 bg-transparent rounded-md"
+              >
+                Cart
+              </Button>
+            )}
+
             <Button
               onClick={handleLogout}
-              size="middle"
-              type="default"
               icon={<LogoutOutlined />}
+              type="default"
+              className="text-gray-300 border-gray-600 hover:border-red-400 hover:text-red-400 bg-transparent rounded-md"
             >
               Logout
             </Button>
           </div>
         ) : (
-          <div className="flex items-center space-x-4">
-            <a
-              href="/register"
-              className="text-gray-700 hover:text-blue-500 transition"
+          <div className="flex items-center gap-4">
+            <Link
+              to="/register"
+              className="text-gray-300 hover:text-blue-400 transition"
             >
               Sign Up
-            </a>
-            <a
-              href="/login"
-              className="text-gray-700 hover:text-blue-500 transition"
+            </Link>
+            <Link
+              to="/login"
+              className="text-gray-300 hover:text-blue-400 transition"
             >
               Sign In
-            </a>
+            </Link>
           </div>
         )}
       </nav>

@@ -29,7 +29,7 @@ const RegisterPage = () => {
           className="text-center font-bold text-4xl text-gray-800 tracking-tight"
         >
           <span className="block mb-2 animate-fade-in">
-            Welcome to TechShop.com
+            Welcome to TechVN.com
           </span>
           <span className="block text-2xl text-blue-600 font-semibold animate-pulse">
             Sign Up

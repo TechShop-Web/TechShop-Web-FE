@@ -13,7 +13,7 @@ const MainLayout = () => {
         <AppHeader />
       </div>
       <Content className="flex-1">
-        <main className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 py-10 space-y-16">
+        <main>
           <Outlet />
         </main>
       </Content>

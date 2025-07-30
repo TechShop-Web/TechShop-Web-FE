@@ -12,6 +12,9 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import adminApi from "../../api/adminApi";
+import userApi from "../../api/userApi";
+import orderApi from "../../api/orderApi";
+import productApi from "../../api/productApi"; // Import the new productApi
 import RevenueChart from "./RevenueChart";
 import OrdersChart from "./OrdersChart";
 
@@ -30,6 +33,11 @@ const DashboardPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [userCount, setUserCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
+  const [productCount, setProductCount] = useState(0);
+
+  // Fetching statistics (users, products, orders)
   const fetchStats = async () => {
     setLoading(true);
     const res = await adminApi.getStatistics({
@@ -47,15 +55,33 @@ const DashboardPage = () => {
     setLoading(false);
   };
 
+  // Fetching users, products, orders
+  const fetchUsers = async () => {
+    const token = localStorage.getItem("accessToken");
+    const users = await userApi.getAllUsers(token);
+    setUserCount(users.length || 0);
+  };
+
+  const fetchProducts = async () => {
+    const products = await productApi.getAll(); // Fetch all products
+    setProductCount(products.length || 0); // Get the count of products
+  };
+
+  const fetchOrders = async () => {
+    const orders = await orderApi.getOrderByUserId();
+    setOrderCount(orders.length || 0);
+  };
+
   useEffect(() => {
     fetchStats();
+    fetchUsers();
+    fetchProducts(); // Fetch product count here
+    fetchOrders();
   }, [startDate, endDate, pageIndex, pageSize]);
 
   const chartData = data
     .map((item) => ({
-      date: `${item.year}-${String(item.month).padStart(2, "0")}-${String(
-        item.day
-      ).padStart(2, "0")}`,
+      date: `${item.year}-${String(item.month).padStart(2, "0")}-${String(item.day).padStart(2, "0")}`,
       revenue: Number(item.totalRevenue),
       orders: Number(item.totalOrders),
     }))
@@ -67,9 +93,7 @@ const DashboardPage = () => {
       dataIndex: "date",
       key: "date",
       render: (_, record) =>
-        `${record.year}-${String(record.month).padStart(2, "0")}-${String(
-          record.day
-        ).padStart(2, "0")}`,
+        `${record.year}-${String(record.month).padStart(2, "0")}-${String(record.day).padStart(2, "0")}`,
     },
     {
       title: "Total Orders",
@@ -86,6 +110,28 @@ const DashboardPage = () => {
   return (
     <div className="space-y-6">
       <Title level={3}>Order Statistics</Title>
+
+      {/* Statistics Cards */}
+      <Row gutter={24}>
+        <Col span={8}>
+          <Card title="Total Users" bordered={false}>
+            <div className="text-3xl font-semibold">{userCount}</div>
+            <div className="text-gray-500">Users registered</div>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="Total Products" bordered={false}>
+            <div className="text-3xl font-semibold">{productCount}</div>
+            <div className="text-gray-500">Products available</div>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="Total Orders" bordered={false}>
+            <div className="text-3xl font-semibold">{orderCount}</div>
+            <div className="text-gray-500">Orders placed</div>
+          </Card>
+        </Col>
+      </Row>
 
       {/* Filters */}
       <Space size="middle" wrap>
