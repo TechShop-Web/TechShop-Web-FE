@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, Spin } from "antd";
+import { Typography } from "antd";
+const { Title, Text } = Typography;
 import productApi from "../api/productApi";
 
 const fallbackProductDetail = {
@@ -27,6 +29,7 @@ const fallbackProductDetail = {
 const ProductDetailPage = () => {
   const { id } = useParams();
   const [productDetail, setProductDetail] = useState(null);
+  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -34,14 +37,15 @@ const ProductDetailPage = () => {
     const fetchVariants = async () => {
       try {
         const data = await productApi.getVariantsByProductId(id);
-
+        const product = await productApi.getProductDetailById(id);
+        setProduct(product);
         if (!Array.isArray(data) || data.length === 0) {
           console.warn(
             "Fallback to fake data due to empty or invalid response"
           );
           setProductDetail(fallbackProductDetail);
         } else {
-          const product = data[0]; // ✅ lấy phần tử đầu tiên
+          const product = data[0];
           setProductDetail({
             productName: product.productName,
             productId: product.productId,
@@ -75,8 +79,16 @@ const ProductDetailPage = () => {
 
   return (
     <div className="max-w-full mx-auto px-6 py-12">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8 text-left">
-        {productDetail.productName}
+      <h1 className="text-left mb-6">
+        <Title level={2} className="!m-0 !text-gray-900 !font-bold">
+          {productDetail.productName}
+        </Title>
+        <Text className="block text-base text-gray-700 font-medium">
+          {product.brand}
+        </Text>
+        <Text className="block text-sm text-gray-600 italic">
+          {product.description}
+        </Text>
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

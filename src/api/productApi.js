@@ -8,7 +8,6 @@ const axiosInstance = axios.create({
 });
 
 const productApi = {
-  // Product APIs
   getAll: async () => {
     const response = await axiosInstance.get("/Product/list");
     return response.data;
@@ -34,7 +33,6 @@ const productApi = {
     return response.data;
   },
 
-  // Product Variant APIs
   getAllVariants: async () => {
     const response = await axiosInstance.get("/ProductVariant/list");
     return response.data;
@@ -73,7 +71,6 @@ const productApi = {
     return response.data;
   },
 
-  // Category APIs (optional, if you want to use them)
   getAllCategories: async () => {
     const response = await axiosInstance.get("/Category/list");
     return response.data;
