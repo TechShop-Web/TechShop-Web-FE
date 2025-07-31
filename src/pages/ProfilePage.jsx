@@ -21,7 +21,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <Layout className="min-h-screen min-w-max  bg-transparent">
+    <Layout className="min-h-screen max-w-full bg-transparent">
       <Sider
         width={200}
         className="border-r border-gray-200 bg-transparent rounded-none"

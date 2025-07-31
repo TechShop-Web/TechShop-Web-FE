@@ -20,6 +20,7 @@ import ProductManagementPage from "./pages/admin/ProductManagementPage";
 import UserManagementPage from "./pages/admin/UserManagementPage";
 import CategoryManagementPage from "./pages/admin/CategoryManagementPage";
 import AdminRoute from "./components/AdminRoute";
+import CustomerRoute from "./components/CustomerRoute";
 function App() {
   return (
     <>
@@ -45,10 +46,38 @@ function App() {
             />
             <Route path="products/:id" element={<ProductDetailPage />} />
             <Route path="variants/:id" element={<VariantDetailPage />} />
-            <Route path="confirm-order" element={<ConfirmOrderPage />} />
-            <Route path="account" element={<ProfilePage />} />
-            <Route path="cart" element={<CartPage />} />
-            <Route path="vnpay-return" element={<PaymentReturnPage />} />
+            <Route
+              path="confirm-order"
+              element={
+                <CustomerRoute>
+                  <ConfirmOrderPage />
+                </CustomerRoute>
+              }
+            />
+            <Route
+              path="account"
+              element={
+                <CustomerRoute>
+                  <ProfilePage />
+                </CustomerRoute>
+              }
+            />
+            <Route
+              path="cart"
+              element={
+                <CustomerRoute>
+                  <CartPage />
+                </CustomerRoute>
+              }
+            />
+            <Route
+              path="vnpay-return"
+              element={
+                <CustomerRoute>
+                  <PaymentReturnPage />
+                </CustomerRoute>
+              }
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
           <Route

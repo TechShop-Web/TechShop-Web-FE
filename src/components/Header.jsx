@@ -14,7 +14,10 @@ const AppHeader = () => {
       content: "Are you sure you want to log out?",
       okText: "Yes, Logout",
       cancelText: "Cancel",
-      onOk: () => logout(),
+      onOk: () => {
+        logout();
+        navigate("login");
+      },
     });
   };
   const handleCart = () => {
